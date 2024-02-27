@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="MTT"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\..\usr\share\;CMake Files\..\..\..\..\..\..\usr\share\OpenCV\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/lab/Devel/projects/MTT/cpp/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/lab/Devel/projects/MTT/cpp/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="MTT">
+				<Option output="/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/MTT" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lab/Devel/projects/MTT/cpp/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lab/Devel/projects/MTT/cpp/lib/tuio2_headers/TUIO2"/>
+					<Add directory="/home/lab/Devel/projects/MTT/cpp/lib/tuio2_headers/oscpack"/>
+					<Add directory="/usr/include/opencv"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 MTT"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="MTT/fast">
+				<Option output="/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/MTT" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lab/Devel/projects/MTT/cpp/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/lab/Devel/projects/MTT/cpp/lib/tuio2_headers/TUIO2"/>
+					<Add directory="/home/lab/Devel/projects/MTT/cpp/lib/tuio2_headers/oscpack"/>
+					<Add directory="/usr/include/opencv"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 MTT/fast"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/lab/Devel/projects/MTT/cpp/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j2 -f &quot;/home/lab/Devel/projects/MTT/cpp/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/lib/surface.cpp">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/lib/surface.h">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/main.cpp">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/math/smath.cpp">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/math/smath.h">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/messaging/MessagingHandler.cpp">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/messaging/MessagingHandler.h">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/datastructures/document.cpp">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/datastructures/document.h">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/datastructures/hand.cpp">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/datastructures/hand.h">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/datastructures/stamp.cpp">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/datastructures/stamp.h">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/datastructures/touch.cpp">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/datastructures/touch.h">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/marker/marker_creation.cpp">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/marker/marker_creation.h">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/marker/predefined_markers.h">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/processing.cpp">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/processing.h">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/tracking/Trackable.cpp">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/tracking/Trackable.h">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/processing/tracking/TrackableTypes.h">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/util/stime.h">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/util/util.cpp">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/util/util.h">
+			<Option target="MTT"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/../../../../../../usr/share/OpenCV/OpenCVConfig-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\share\OpenCV\"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/../../../../../../usr/share/OpenCV/OpenCVConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\share\OpenCV\"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/../../../../../../usr/share/OpenCV/OpenCVModules-release.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\share\OpenCV\"/>
+		</Unit>
+		<Unit filename="/home/lab/Devel/projects/MTT/cpp/../../../../../../usr/share/OpenCV/OpenCVModules.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\share\OpenCV\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
