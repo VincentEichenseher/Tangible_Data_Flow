@@ -2,7 +2,7 @@
 import pandas as pd
 import pyqtgraph as pg
 import json
-import cv2
+#import cv2
 import signal
 
 from pyqtgraph.flowchart.NodeLibrary import NodeLibrary
@@ -15,12 +15,12 @@ from sklearn import datasets
 
 # important params:
 # modify as needed
-camera_id = 0 # opencv videocapture index parameter
-camera_prefered_api = cv2.CAP_DSHOW # for Linux cv2.CAP_V4L2; Window CAP_DSHOW
+#camera_id = 0 # opencv videocapture index parameter
+#camera_prefered_api = cv2.CAP_DSHOW # for Linux cv2.CAP_V4L2; Window CAP_DSHOW
 offset_x = 0 # node offset in x direction
 offset_y = 0 # node offset in y direction
 update_interval = 250 # update interval in ms
-marker_dict = cv2.aruco.DICT_4X4_250 # Arcuco dictionary
+#marker_dict = cv2.aruco.DICT_4X4_250 # Arcuco dictionary
 
 # temp storeage variables
 json_data = None #json data cache 
@@ -92,8 +92,10 @@ pw1Node.setPlot(pw1)
 pw2Node = fc.createNode('HistogramWidget', pos=(300, -50))
 pw2Node.setPlot(pw2)
 
+'''
 # get predefined marker dictionary for detecting aruco markers
-aruco_dict = cv2.aruco.getPredefinedDictionary(marker_dict)
+aruco_dict = cv2.aruco.getPredefinedDictionary(marker_dict)t
+'''
 
 # load json for the first time
 if json_data is None:
@@ -102,9 +104,12 @@ if json_data is None:
 
 # define functions
 # create nodes based on aruco markers detected
-def create_nodes_with_cv():
+def create_nodes():
     global json_data
-    detect_node_markers()
+    ids = None
+    coordinates = None, None
+    #listen for markers here
+    set_detected_as_active(ids,coordinates)
     with open("./node_data.json","r") as fh:
       json_data = json.load(fh)
     for element in json_data["nodes"]:
@@ -125,6 +130,23 @@ def create_nodes_with_cv():
             elements_added.pop(id_as_string)
     fc.outputChanged()
 
+def set_detected_as_active(ids,coordinates):
+    if ids is not None:
+        for element in json_data["nodes"]:
+            if element["aruco_id"] in ids:
+                element["is_active"] = True
+                element["coord"] = [coordinates[0],coordinates[1]]
+            else:
+                element["is_active"] = False
+    else:
+        for element in json_data["nodes"]:
+            element["is_active"] = False
+            
+    with open("./node_data.json","w") as fh:
+        fh.write(json.dumps(json_data))
+        print(f"json updated; elements {ids} are currently active")
+
+'''
 # Aruco marker detection
 def detect_node_markers():
     camera = cv2.VideoCapture(camera_id, camera_prefered_api)
@@ -157,10 +179,11 @@ def detect_node_markers():
             break
 
     camera.release()
+'''
 
 # timer to perform additional process (computer vision and node creation) during main qt eventloop
 timer = QTimer()
-timer.timeout.connect(create_nodes_with_cv)
+timer.timeout.connect(create_nodes)
 timer.start(update_interval)
 
 # main

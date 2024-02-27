@@ -5,7 +5,7 @@
             "is_active": false,
             "node_type": "GetColumnData",
             "values": {
-                "column": 0
+                "column": 1
             },
             "value_types": {
                 "column": "int"
