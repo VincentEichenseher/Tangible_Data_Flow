@@ -6,11 +6,11 @@ import argparse
 import threading
 import sys
 
-from python.lib.pythonosc import dispatcher
-from python.lib.pythonosc import osc_server
+from lib.pythonosc import dispatcher
+from lib.pythonosc import osc_server
 
-from python.parsers.MessageParser import MessageParser
-from python.parsers.MessageTypes import MessageTypes
+from parsers.MessageParser import MessageParser
+from parsers.MessageTypes import MessageTypes
 import signal
 
 from pyqtgraph.flowchart.NodeLibrary import NodeLibrary
@@ -37,7 +37,7 @@ json_changed = False # var keeping track of changes to the json so we can only c
 
 # create Qt app
 signal.signal(signal.SIGINT, signal.SIG_DFL) # SIGINT = Ctrl + C; this line lets us kill the Qt app and timer with te rest of this script
-app = pg.mkQApp("Data Flow Visualization")
+app = QtWidgets.QApplication(sys.argv)
 
 ## Create main window and layout
 win = QtWidgets.QMainWindow()
@@ -123,8 +123,13 @@ def main():
 
 
     dispatch = dispatcher.Dispatcher()
-    dispatch.map(MessageTypes.TOKEN.value, handle_markers(mp))
-
+    dispatch.map(MessageTypes.POINTER.value, mp.parse)
+    dispatch.map(MessageTypes.TOKEN.value, mp.parse)
+    dispatch.map(MessageTypes.TOKEN.value, mp.handle_markers)
+    dispatch.map(MessageTypes.BOUNDS.value, mp.parse)
+    dispatch.map(MessageTypes.FRAME.value, mp.parse)
+    dispatch.map(MessageTypes.ALIVE.value, mp.parse)
+    dispatch.map(MessageTypes.SYMBOL.value, mp.parse)
     server = osc_server.ThreadingOSCUDPServer((args.ip, args.port), dispatch)
 
     print("Serving on {}".format(server.server_address))
@@ -133,13 +138,14 @@ def main():
 
     server_.start()
 
-    pg.aboutToQuit.connect(lambda: server.shutdown())
+    app.aboutToQuit.connect(lambda: server.shutdown())
 
-    sys.exit(pg.exec_())
+    sys.exit(app.exec_())
 
 def handle_markers(message_parser):
-    message_parser.parse()
+    #message_parser.parse([MessageTypes.TOKEN.value])
     tracked_items = message_parser.generate_trackables_list()
+    print(f"TRACKQABLES: {tracked_items}")
     active_markers = []
     marker_coords = []
     for item in tracked_items:
@@ -152,7 +158,7 @@ def handle_markers(message_parser):
                 coord_index = active_markers.index(element["aruco_id"])
                 element["coord"] = marker_coords[coord_index]
             else:
-                element["is_active"] = False
+                 element["is_active"] = False
     else:
         for element in json_data["nodes"]:
             element["is_active"] = False
@@ -206,9 +212,7 @@ def set_detected_as_active(ids):
     with open("./node_data.json","w") as fh:
         fh.write(json.dumps(json_data))
         print(f"json updated; elements {ids} are currently active")
-'''
 
-'''
 # Aruco marker detection
 def detect_node_markers():
     camera = cv2.VideoCapture(camera_id, camera_prefered_api)
