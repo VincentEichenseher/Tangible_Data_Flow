@@ -139,8 +139,28 @@ def main():
 
 def handle_markers(message_parser):
     message_parser.parse()
-    tracked_markers = message_parser.generate_trackables_list()
-    print(tracked_markers)
+    tracked_items = message_parser.generate_trackables_list()
+    active_markers = []
+    marker_coords = []
+    for item in tracked_items:
+        if item.id == 0:
+            active_markers.append(item.type)
+            marker_coords.append(item.position)
+    if active_markers is not None:
+        for element in json_data["nodes"]:
+            if element["aruco_id"] in active_markers:
+                coord_index = active_markers.index(element["aruco_id"])
+                element["coord"] = marker_coords[coord_index]
+            else:
+                element["is_active"] = False
+    else:
+        for element in json_data["nodes"]:
+            element["is_active"] = False
+            
+    with open("./node_data.json","w") as fh:
+        fh.write(json.dumps(json_data))
+    
+
 
 # create nodes based on aruco markers detected
 def create_nodes():
@@ -169,7 +189,8 @@ def create_nodes():
             elements_added.pop(id_as_string)
     fc.outputChanged()
 
-def set_detected_as_active(ids,coordinates):
+'''
+def set_detected_as_active(ids):
     if ids is not None:
         for element in json_data["nodes"]:
             if element["aruco_id"] in ids:
@@ -184,6 +205,7 @@ def set_detected_as_active(ids,coordinates):
     with open("./node_data.json","w") as fh:
         fh.write(json.dumps(json_data))
         print(f"json updated; elements {ids} are currently active")
+'''
 
 '''
 # Aruco marker detection
