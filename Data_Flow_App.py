@@ -159,6 +159,8 @@ def handle_markers(message_parser):
             
     with open("./node_data.json","w") as fh:
         fh.write(json.dumps(json_data))
+    fh.close()
+    create_nodes()
     
 
 
@@ -168,7 +170,6 @@ def create_nodes():
     ids = None
     coordinates = None, None
     #listen for markers here
-    set_detected_as_active(ids,coordinates)
     with open("./node_data.json","r") as fh:
       json_data = json.load(fh)
     for element in json_data["nodes"]:
