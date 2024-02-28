@@ -2,7 +2,15 @@
 import pandas as pd
 import pyqtgraph as pg
 import json
-#import cv2
+import argparse
+import threading
+import sys
+
+from python.lib.pythonosc import dispatcher
+from python.lib.pythonosc import osc_server
+
+from python.parsers.MessageParser import MessageParser
+from python.parsers.MessageTypes import MessageTypes
 import signal
 
 from pyqtgraph.flowchart.NodeLibrary import NodeLibrary
@@ -103,6 +111,37 @@ if json_data is None:
         json_data = json.load(fh)
 
 # define functions
+        
+def main():
+    sys.setrecursionlimit(10000)
+    mp = MessageParser()
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ip", default="127.0.0.1", help="The ip to listen on")
+    parser.add_argument("--port", type=int, default=3333, help="The port to listen on")
+    args = parser.parse_args()
+
+
+    dispatch = dispatcher.Dispatcher()
+    dispatch.map(MessageTypes.TOKEN.value, handle_markers(mp))
+
+    server = osc_server.ThreadingOSCUDPServer((args.ip, args.port), dispatch)
+
+    print("Serving on {}".format(server.server_address))
+
+    server_ = threading.Thread(target=server.serve_forever)
+
+    server_.start()
+
+    pg.aboutToQuit.connect(lambda: server.shutdown())
+
+    sys.exit(pg.exec_())
+
+def handle_markers(message_parser):
+    message_parser.parse()
+    tracked_markers = message_parser.generate_trackables_list()
+    print(tracked_markers)
+
 # create nodes based on aruco markers detected
 def create_nodes():
     global json_data
@@ -182,11 +221,11 @@ def detect_node_markers():
 '''
 
 # timer to perform additional process (computer vision and node creation) during main qt eventloop
-timer = QTimer()
-timer.timeout.connect(create_nodes)
-timer.start(update_interval)
+#timer = QTimer()
+#timer.timeout.connect(create_nodes)
+#timer.start(update_interval)
 
 # main
 if __name__ == '__main__':
-    pg.exec() # execute main qt event loop
+    main() # execute main qt event loop
 

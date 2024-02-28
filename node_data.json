@@ -1,7 +1,7 @@
 {
     "nodes": [
         {
-            "aruco_id": 20,
+            "aruco_id": 0,
             "is_active": false,
             "node_type": "GetColumnData",
             "values": {
@@ -16,7 +16,7 @@
             ]
         },
         {
-            "aruco_id": 40,
+            "aruco_id": 1,
             "is_active": false,
             "node_type": "JoinData",
             "values": {
@@ -36,7 +36,7 @@
             ]
         },
         {
-            "aruco_id": 60,
+            "aruco_id": 2,
             "is_active": false,
             "node_type": "ThresholdData",
             "values": {
@@ -53,7 +53,7 @@
             ]
         },
         {
-            "aruco_id": 80,
+            "aruco_id": 3,
             "is_active": false,
             "node_type": "CalculateStats",
             "values": {
@@ -70,7 +70,7 @@
             ]
         },
         {
-            "aruco_id": 100,
+            "aruco_id": 4,
             "is_active": false,
             "node_type": "MathOperation",
             "values": {
@@ -90,7 +90,7 @@
             ]
         },
         {
-            "aruco_id": 120,
+            "aruco_id": 5,
             "is_active": false,
             "node_type": "MissingDataNode",
             "values": {
@@ -114,11 +114,11 @@
             ]
         },
         {
-            "aruco_id": 140,
+            "aruco_id": 6,
             "is_active": false,
             "node_type": "LinePlotWidget",
             "values": {
-                "plot_type": "Lineplot"
+                "plot_type": "Scatterplot"
             },
             "value_types": {
                 "plot_type": [
@@ -133,7 +133,7 @@
             ]
         },
         {
-            "aruco_id": 160,
+            "aruco_id": 7,
             "is_active": false,
             "node_type": "HistogramWidget",
             "values": {
