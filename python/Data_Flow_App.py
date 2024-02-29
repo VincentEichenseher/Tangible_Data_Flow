@@ -115,7 +115,6 @@ def main():
     dispatch = dispatcher.Dispatcher()
     dispatch.map(MessageTypes.POINTER.value, mp.parse)
     dispatch.map(MessageTypes.TOKEN.value, mp.parse)
-    dispatch.map(MessageTypes.TOKEN.value, mp.parse)
     dispatch.map(MessageTypes.BOUNDS.value, mp.parse)
     dispatch.map(MessageTypes.FRAME.value, mp.parse)
     dispatch.map(MessageTypes.ALIVE.value, mp.parse)

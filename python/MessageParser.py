@@ -79,9 +79,9 @@ class MessageParser:
             # edit json here
 
     def get_tracked_objects(self):
-        return self.generate_trackables_list()
+        return self.generate_trackables_json()
 
-    def generate_trackables_list(self):
+    def generate_trackables_json(self):
 
         try:
             for key in self.alive_objects.keys():
