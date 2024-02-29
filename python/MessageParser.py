@@ -90,15 +90,7 @@ class MessageParser:
                 if o.get_token_component():
                     trackable_type_id = o.get_token_component().type_id
                     trackable_type = o.get_class_id()
-                    session_id = o.get_session_id()
-                    type_id = o.get_type_id()
-                    user_id = o.get_user_id()
                     position = list(o.get_bounds_component().get_position())
-                    angle = o.get_bounds_component().angle
-                    width = o.get_bounds_component().width
-                    height = o.get_bounds_component().height
-
-                    roi = list(smath.Math.create_rectangle(position[0], position[1], width, height, angle))
 
                     if trackable_type_id == TrackableTypes.TANGIBLE.value:
                         print(f"Detected Tangible of type {trackable_type} at position {position}")
