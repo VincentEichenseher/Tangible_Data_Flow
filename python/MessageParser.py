@@ -68,14 +68,20 @@ class MessageParser:
                 dead.append(key)
 
         for d in dead:
+            dead_trackable_type = d.get_token_component().type_id
+            json_data = {}
+            with open("../node_data.json","r") as fh:
+                json_data = json.load(fh)
+            json_data["nodes"][dead_trackable_type]["is_active"] = False
+            with open("../node_data.json","w") as fh:
+                fh.write(json.dumps(json_data))
             self.alive_objects.pop(d)
+            # edit json here
 
     def get_tracked_objects(self):
         return self.generate_trackables_list()
 
     def generate_trackables_list(self):
-        trackables = []
-        temp = []
 
         try:
             for key in self.alive_objects.keys():
@@ -83,7 +89,7 @@ class MessageParser:
 
                 if o.get_token_component():
                     trackable_type_id = o.get_token_component().type_id
-
+                    trackable_type = o.get_class_id()
                     session_id = o.get_session_id()
                     type_id = o.get_type_id()
                     user_id = o.get_user_id()
@@ -94,89 +100,18 @@ class MessageParser:
 
                     roi = list(smath.Math.create_rectangle(position[0], position[1], width, height, angle))
 
-                    if trackable_type_id == TrackableTypes.PHYSICAL_DOCUMENT.value:
-                        trackables.append(Document(o.get_class_id(), session_id, type_id, user_id, "Document", position, roi, width, height, angle))
-                    elif trackable_type_id == TrackableTypes.TANGIBLE.value:
-                        """
-                        @ Alexander
-                        
-                        Ich habe mir den Tracker angesehen und fest gestellt, 
-                        dass unique ids bereits übergeben werden.
-                        Zumindest so, dass es für unsere Zwecke ausreicht.
-                        Ich habe den Tracker dennoch angepasst und die vier farbigen Holztangibles
-                        hinzugefügt.
-                        Welche unique ids der Tracker hinzufügt ist hard-coded und können wir 
-                        mit Neukompilation ändern.
-                        die class id sollte deine unique id sein, die du brauchst.
-                        Allerdings verhält sich die Session id equivalent, weswegen die evtl.
-                        korrekt ist oder bestenfalls auch funktioniert.
-                        Der neue Tracker heißt MTT_Tangible.
-                        Den bitte ausführen, wenn du an deiner Software arbeitest.
-                        
-                        VG
-                        JH
-                        """
-                        print("Obj start")
-                        print(type_id)
-                        print(user_id)
-                        print(session_id)
-                        print(o.get_class_id()) # <-- das hier sollte dein unique identifier für die tangibles sein
-                        print("Obj end")
-                        trackables.append(Tangible(o.get_class_id(), session_id, type_id, user_id, "Tangible", position, roi, width, height, angle))
-                    elif trackable_type_id == TrackableTypes.HAND.value:
-                        trackables.append(Hand(o.get_class_id(), [-1, -1], [[], [], [], [], [], []], session_id, type_id, user_id, "Hand", position, roi, width, height, angle))
-                    elif trackable_type_id == TrackableTypes.TOUCH.value:
-                        temp.append(Touch(o.get_class_id(), [-1, -1], o.get_bounds_component().area, session_id, type_id, user_id, "Touch", position, roi, width, height, angle))
+                    if trackable_type_id == TrackableTypes.TANGIBLE.value:
+                        print(f"Detected Tangible of type {trackable_type} at position {position}")
+                        #edit json here, set alive elements is_active == true, set coords
+                        json_data = {}
+                        with open("../node_data.json","r") as fh:
+                            json_data = json.load(fh)
+                        json_data["nodes"][trackable_type]["is_active"] = True
+                        json_data["nodes"][trackable_type]["coords"] = position
+                        with open("../node_data.json","w") as fh:
+                            fh.write(json.dumps(json_data))
+                    else:
+                        print(f"Detected trackable of type {trackable_type_id}")
 
-            if len(temp) == 3:
-                p = temp[0]
-
-                points = [touch.center for touch in temp]
-                center = smath.Math.center_of_polygon(points)
-
-                trackables.append(Hand(TrackableTypes.HAND.value, [-1, -1], [[], [], [], [], [], []], p.session_id, TrackableTypes.HAND.value, p.user_id, "Hand", center, points, p.width, p.height, p.angle))
-            else:
-                trackables += temp
         except RuntimeError:
             pass
-
-        return trackables
-
-
-    def handle_markers(self,*args):
-        print(f"marker_id:{args[3]}")
-        active_markers = []
-        marker_coords = []
-        try:
-            for key in self.alive_objects.keys():
-                o = self.alive_objects[key]
-
-                if o.get_token_component():
-                    
-                    active_markers.append(o.get_type_id)
-                    marker_coords.append(list(o.get_bounds_component().get_position()))
-        except RuntimeError:
-            pass
-        print(f"Markers currently ALIVE: {active_markers}")
-                   
-        with open("../../node_data.json","w") as fh:
-                json_data = json.load(fh)
-            
-        
-
-        
-        if active_markers is not None:
-            for element in json_data["nodes"]:
-                if element["aruco_id"] in active_markers:
-                    coord_index = active_markers.index(element["aruco_id"])
-                    element["coord"] = marker_coords[coord_index]
-                else:
-                     element["is_active"] = False
-        else:
-            for element in json_data["nodes"]:
-                element["is_active"] = False
-            
-        with open("../../node_data.json","w") as fh:
-            fh.write(json.dumps(json_data))
-        fh.close()
-

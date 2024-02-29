@@ -23,17 +23,13 @@ from sklearn import datasets
 
 # important params:
 # modify as needed
-#camera_id = 0 # opencv videocapture index parameter
-#camera_prefered_api = cv2.CAP_DSHOW # for Linux cv2.CAP_V4L2; Window CAP_DSHOW
 offset_x = 0 # node offset in x direction
 offset_y = 0 # node offset in y direction
 update_interval = 250 # update interval in ms
-#marker_dict = cv2.aruco.DICT_4X4_250 # Arcuco dictionary
 
 # temp storeage variables
 json_data = None #json data cache 
 elements_added = {} # dict to cache references to currently active elements (so these can be removed and to avoid duplication of elements on update)
-json_changed = False # var keeping track of changes to the json so we can only change the flowchart when changes occur
 
 # create Qt app
 signal.signal(signal.SIGINT, signal.SIG_DFL) # SIGINT = Ctrl + C; this line lets us kill the Qt app and timer with te rest of this script
@@ -100,11 +96,6 @@ pw1Node.setPlot(pw1)
 pw2Node = fc.createNode('HistogramWidget', pos=(300, -50))
 pw2Node.setPlot(pw2)
 
-'''
-# get predefined marker dictionary for detecting aruco markers
-aruco_dict = cv2.aruco.getPredefinedDictionary(marker_dict)t
-'''
-
 # load json for the first time
 if json_data is None:
     with open("./node_data.json","r") as fh:
@@ -121,11 +112,10 @@ def main():
     parser.add_argument("--port", type=int, default=3333, help="The port to listen on")
     args = parser.parse_args()
 
-
     dispatch = dispatcher.Dispatcher()
     dispatch.map(MessageTypes.POINTER.value, mp.parse)
     dispatch.map(MessageTypes.TOKEN.value, mp.parse)
-    dispatch.map(MessageTypes.TOKEN.value, mp.handle_markers)
+    dispatch.map(MessageTypes.TOKEN.value, mp.parse)
     dispatch.map(MessageTypes.BOUNDS.value, mp.parse)
     dispatch.map(MessageTypes.FRAME.value, mp.parse)
     dispatch.map(MessageTypes.ALIVE.value, mp.parse)
@@ -136,50 +126,30 @@ def main():
 
     server_ = threading.Thread(target=server.serve_forever)
 
+    timer = QTimer()
+    timer.timeout.connect(create_nodes_from_json)
+
     server_.start()
 
+    timer.start(update_interval)
+
     app.aboutToQuit.connect(lambda: server.shutdown())
+    app.aboutToQuit.connect(lambda: timer.stop())
 
     sys.exit(app.exec_())
 
-def handle_markers(message_parser):
-    #message_parser.parse([MessageTypes.TOKEN.value])
-    tracked_items = message_parser.generate_trackables_list()
-    print(f"TRACKQABLES: {tracked_items}")
-    active_markers = []
-    marker_coords = []
-    for item in tracked_items:
-        if item.id == 0:
-            active_markers.append(item.type)
-            marker_coords.append(item.position)
-    if active_markers is not None:
-        for element in json_data["nodes"]:
-            if element["aruco_id"] in active_markers:
-                coord_index = active_markers.index(element["aruco_id"])
-                element["coord"] = marker_coords[coord_index]
-            else:
-                 element["is_active"] = False
-    else:
-        for element in json_data["nodes"]:
-            element["is_active"] = False
-            
-    with open("./node_data.json","w") as fh:
-        fh.write(json.dumps(json_data))
-    fh.close()
-    create_nodes()
-    
-
-
-# create nodes based on aruco markers detected
-def create_nodes():
+# create nodes based on changes to json
+def create_nodes_from_json():
     global json_data
-    ids = None
-    coordinates = None, None
     #listen for markers here
+    stack_data = None
     with open("./node_data.json","r") as fh:
       json_data = json.load(fh)
+    with open("./stack_data.json","r") as fh:
+      stack_data = json.load(fh)
     for element in json_data["nodes"]:
-        id_as_string = str(element["aruco_id"])
+        el_id = element["aruco_id"]
+        id_as_string = str(el_id)
         if element["is_active"] is True and id_as_string not in list(elements_added):
             nodename = element["node_type"]
             nodecoords = element["coord"]
@@ -188,69 +158,16 @@ def create_nodes():
         elif element["is_active"] is True and id_as_string in list(elements_added):
             # change crtl-widget values
             ui = elements_added[id_as_string].ctrls
-            values = element["values"]
-            for key in values.keys():
-                ui[key].setValue(values[key])
+            graphics_item = elements_added[id_as_string].graphicsItem()
+            new_values = stack_data["nodes"][el_id]["values"]
+            new_coords = json_data["nodes"][el_id]["coords"]
+            graphics_item.setPos(new_coords[0],new_coords[1])
+            for key in new_values.keys():
+                ui[key].setValue(new_values[key])
         elif element["is_active"] is False and id_as_string in list(elements_added):
             fc.removeNode(elements_added[id_as_string])
             elements_added.pop(id_as_string)
     fc.outputChanged()
-
-'''
-def set_detected_as_active(ids):
-    if ids is not None:
-        for element in json_data["nodes"]:
-            if element["aruco_id"] in ids:
-                element["is_active"] = True
-                element["coord"] = [coordinates[0],coordinates[1]]
-            else:
-                element["is_active"] = False
-    else:
-        for element in json_data["nodes"]:
-            element["is_active"] = False
-            
-    with open("./node_data.json","w") as fh:
-        fh.write(json.dumps(json_data))
-        print(f"json updated; elements {ids} are currently active")
-
-# Aruco marker detection
-def detect_node_markers():
-    camera = cv2.VideoCapture(camera_id, camera_prefered_api)
-    #camera = cv2.VideoCapture("./Aruco_Test.mp4")
-    
-    while(camera.isOpened()):
-        global json_changed
-        ret, img = camera.read()
-        if ret == True:
-            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            corners, ids, rejected = cv2.aruco.detectMarkers(gray, aruco_dict)
-            if ids is not None:
-                for element in json_data["nodes"]:
-                    if element["aruco_id"] in ids:
-                        element["is_active"] = True
-                        id_index = ids.flatten().tolist().index(element["aruco_id"])
-                        element_corners = corners[id_index]
-                        element["coord"] = [int(element_corners[0][0][0]),int(element_corners[0][0][1])]
-                    else:
-                        element["is_active"] = False
-            else:
-                for element in json_data["nodes"]:
-                    element["is_active"] = False
-                    
-            with open("./node_data.json","w") as fh:
-                fh.write(json.dumps(json_data))
-                print(f"json updated; elements {ids} are currently active")
-            break
-        else:
-            break
-
-    camera.release()
-'''
-
-# timer to perform additional process (computer vision and node creation) during main qt eventloop
-#timer = QTimer()
-#timer.timeout.connect(create_nodes)
-#timer.start(update_interval)
 
 # main
 if __name__ == '__main__':
