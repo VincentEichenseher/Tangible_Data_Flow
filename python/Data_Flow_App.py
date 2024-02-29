@@ -159,7 +159,7 @@ def create_nodes_from_json():
             ui = elements_added[id_as_string].ctrls
             graphics_item = elements_added[id_as_string].graphicsItem()
             new_values = stack_data["nodes"][el_id]["values"]
-            new_coords = json_data["nodes"][el_id]["coords"]
+            new_coords = json_data["nodes"][el_id]["coord"]
             graphics_item.setPos(new_coords[0],new_coords[1])
             for key in new_values.keys():
                 ui[key].setValue(new_values[key])

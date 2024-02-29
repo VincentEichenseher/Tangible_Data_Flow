@@ -107,7 +107,7 @@ class MessageParser:
                         with open("../node_data.json","r") as fh:
                             json_data = json.load(fh)
                         json_data["nodes"][trackable_type]["is_active"] = True
-                        json_data["nodes"][trackable_type]["coords"] = position
+                        json_data["nodes"][trackable_type]["coord"] = position
                         with open("../node_data.json","w") as fh:
                             fh.write(json.dumps(json_data))
                     else:
