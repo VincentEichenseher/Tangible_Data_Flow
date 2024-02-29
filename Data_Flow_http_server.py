@@ -18,6 +18,7 @@ class Server(BaseHTTPRequestHandler):
             with open(self.data_path,'rb') as fh:
                 self._make_headers()
                 self.wfile.write(fh.read())
+                fh.close()
 
     def do_POST(self):
         if self.path == '/stack_data.json':
@@ -26,18 +27,21 @@ class Server(BaseHTTPRequestHandler):
             
             data_object = json.loads(data)
             base_object = 0
-            print(f"data: {data_object}")
             
-            with open(self.data_path, 'rb') as fh:
+            with open(self.edit_path, 'rb') as fh:
                 base_object = json.loads(fh.read())
+                fh.close()
             
             base_object["nodes"][(data_object["list_id"])]["values"] = data_object["data"]["values"]
             new_data = json.dumps(base_object)
             
             with open(self.edit_path, 'w') as fh:
                 fh.write(new_data)
+                fh.close()
 
             self.send_response(200)
+            self.send_header('Received', 'OK')
+            self.end_headers()
         
 def run(server=HTTPServer, handler=Server, port=8008):
     url = ('', port)
