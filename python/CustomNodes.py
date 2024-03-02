@@ -126,9 +126,9 @@ class GroupByNode(CtrlNode):
                     'mean': result[str(index)+ '_' + 'mean'],
                     'var': result[str(index)+ '_' + 'var'],
                     'std': result[str(index)+ '_' + 'std'],
-                    'group': stats.index}
+                    'group': df[group_var].to_dict()}
         else:
-            return {'group': stats.index}
+            return {'group': None}
         
 class MathOperationNode(CtrlNode):
     "preforms a mathemetical operation (+, -, *, /) on dataframes or columns"
@@ -201,7 +201,7 @@ class LinePlotWidgetNode(CtrlNode):
     nodeName = 'LinePlotWidget'
     sigPlotChanged = QtCore.Signal(object)
     uiTemplate = [
-        ('plot_type',  'combo', {'values': ["Lineplot","Barchart","Scatterplot"], 'index': 0}),]
+        ('plot_type',  'combo', {'values': ["Scatterplot","Lineplot","Barchart"], 'index': 0}),]
 
     def __init__(self, name):
         terminals = {'X': {'io':'in'},'Y':{'io':'in'}}
@@ -229,7 +229,7 @@ class LinePlotWidgetNode(CtrlNode):
             df2 = pd.DataFrame.from_dict(Y,orient='index')
             if df1.empty == False and df2.empty == False:
                 xData = np.concatenate(df1.to_numpy(),axis=0).tolist()
-                yData = np.concatenate(df1.to_numpy(),axis=0).tolist()
+                yData = np.concatenate(df2.to_numpy(),axis=0).tolist()
                 self.plot.clear()
                 if plot_type == "Lineplot":
                     plot = PlotDataItem(x=xData,y=yData)
