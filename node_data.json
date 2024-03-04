@@ -18,17 +18,12 @@
         {
             "aruco_id": 1,
             "is_active": false,
-            "node_type": "JoinData",
+            "node_type": "GetColumnData",
             "values": {
-                "join_type": "Full"
+                "column": 0
             },
             "value_types": {
-                "join_type": [
-                    "Full",
-                    "Inner",
-                    "Right",
-                    "Left"
-                ]
+                "column": "int"
             },
             "coord": [
                 null,
@@ -38,14 +33,12 @@
         {
             "aruco_id": 2,
             "is_active": false,
-            "node_type": "ThresholdData",
+            "node_type": "GetColumnData",
             "values": {
-                "lower_threshold": 0,
-                "upper_threshold": null
+                "column": 0
             },
             "value_types": {
-                "lower_threshold": "float",
-                "upper_threshold": "float"
+                "column": "int"
             },
             "coord": [
                 null,
@@ -55,14 +48,14 @@
         {
             "aruco_id": 3,
             "is_active": false,
-            "node_type": "CalculateStats",
+            "node_type": "ThresholdData",
             "values": {
-                "column": 0,
-                "group_by": 1
+                "lower_threshold": 0,
+                "upper_threshold": null
             },
             "value_types": {
-                "column": "int",
-                "group_by": "int"
+                "lower_threshold": "float",
+                "upper_threshold": "float"
             },
             "coord": [
                 null,
@@ -116,16 +109,14 @@
         {
             "aruco_id": 6,
             "is_active": false,
-            "node_type": "LinePlotWidget",
+            "node_type": "CalculateStats",
             "values": {
-                "plot_type": "Scatterplot"
+                "column": 0,
+                "group_by": 1
             },
             "value_types": {
-                "plot_type": [
-                    "Lineplot",
-                    "Barchart",
-                    "Scatterplot"
-                ]
+                "column": "int",
+                "group_by": "int"
             },
             "coord": [
                 null,
@@ -135,15 +126,12 @@
         {
             "aruco_id": 7,
             "is_active": false,
-            "node_type": "HistogramWidget",
+            "node_type": "JoinData",
             "values": {
-                "plot_type": "Histogram"
+                "join_type": "Full"
             },
             "value_types": {
-                "plot_type": [
-                    "Histogram",
-                    "SimpleLineplot"
-                ]
+                "join_type": ["Full", "Inner", "Right", "Left"]
             },
             "coord": [
                 null,
