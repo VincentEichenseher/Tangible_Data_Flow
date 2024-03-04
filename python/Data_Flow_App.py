@@ -63,12 +63,8 @@ layout.setColumnStretch(1, 15)
 win.showMaximized()
 
 # load data
-iris = datasets.load_iris()
-iris_df=pd.DataFrame(iris.data)
-iris_df['class']=iris.target
-
-iris_df.columns=['sepal_len', 'sepal_wid', 'petal_len', 'petal_wid', 'class']
-data = iris_df.to_dict()
+df = pd.read_csv("./drug-overdose-death-rates.csv")
+data = df.to_dict()
 
 ## set Input Node data
 fc.setInput(dataIn=data)
